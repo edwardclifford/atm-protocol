@@ -13,8 +13,8 @@ class Bank:
     """
 
     def __init__(self, port, verbose=False):
-        self.ser = serial.Serial(port)
-        self.verbose = verbose
+        self.ser = serial.Serial(port, baudrate = 115200)
+	self.verbose = verbose
 
     def _vp(self, msg, stream=logging.info):
         """Prints message if verbose was set

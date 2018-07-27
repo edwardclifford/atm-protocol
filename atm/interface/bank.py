@@ -3,7 +3,16 @@
 import logging
 import struct
 import serial
+from Crypto.Cipher import AES
+from Crypto import Random
 
+def generate_aes(self, aes_key):
+    iv = Random.new().read(AES.block_size)
+    aesProg = AES.new(aes_key, AES.MODE_CBC, iv)
+
+    return aesProg
+
+temp_aes_key = "\xcaG\xd0J\x87O\xd8\xf7.\x95\xdd\xb7\xf3\x02\xef\xcf@\t\xa7/Q\xe6\x903$\xea\x90H\x1d\xd3\x1f\xd1"
 
 class Bank:
     """Interface for communicating with the bank
@@ -37,9 +46,10 @@ class Bank:
             str: Balance of account on success
             bool: False on failure
         """
-        self._vp('check_balance: Sending request to Bank')
-        pkt = "b" + struct.pack(">36s36s", atm_id, card_id)
-        self.ser.write(pkt)
+        aes1 = generate_aes(temp_aes_key)
+        pkt = struct.pack(">32s32s", atm_id, card_id)
+        enc_pkt = "b" + aes1.encrypt(pkt)
+        self.ser.write(enc_pkt)
 
         while pkt not in "ONE":
             pkt = self.ser.read()
@@ -65,8 +75,10 @@ class Bank:
             bool: False on failure
         """
         self._vp('withdraw: Sending request to Bank')
-        pkt = "w" + struct.pack(">36s36sI", atm_id, card_id, amount)
-        self.ser.write(pkt)
+        aes1 = generate_aes(temp_aes_key)
+        pkt = struct.pack(">36s36sI", atm_id, card_id, amount)
+        enc_pkt = "w" + aes2.encrypt(pkt)
+        self.ser.write(enc_pkt)
 
         while pkt not in "ONE":
             pkt = self.ser.read()

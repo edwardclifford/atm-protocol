@@ -6,13 +6,16 @@ import serial
 from Crypto.Cipher import AES
 from Crypto import Random
 
+
 def generate_aes(self, aes_key):
     iv = Random.new().read(AES.block_size)
     aesProg = AES.new(aes_key, AES.MODE_CBC, iv)
 
-    return aesProg
+    return aesProg, iv
+
 
 temp_aes_key = "\xcaG\xd0J\x87O\xd8\xf7.\x95\xdd\xb7\xf3\x02\xef\xcf@\t\xa7/Q\xe6\x903$\xea\x90H\x1d\xd3\x1f\xd1"
+
 
 class Bank:
     """Interface for communicating with the bank
@@ -23,7 +26,7 @@ class Bank:
 
     def __init__(self, port, verbose=False):
         self.ser = serial.Serial(port, baudrate = 115200)
-	self.verbose = verbose
+    self.verbose = verbose
 
     def _vp(self, msg, stream=logging.info):
         """Prints message if verbose was set
@@ -46,9 +49,9 @@ class Bank:
             str: Balance of account on success
             bool: False on failure
         """
-        aes1 = generate_aes(temp_aes_key)
-        pkt = struct.pack(">32s32s", atm_id, card_id)
-        enc_pkt = "b" + aes1.encrypt(pkt)
+        aes1, iv = generate_aes(temp_aes_key)
+        pkt = struct.pack(">36s36s", atm_id, card_id)
+        enc_pkt = "b" + iv + aes1.encrypt(pkt)
         self.ser.write(enc_pkt)
 
         while pkt not in "ONE":
@@ -75,9 +78,9 @@ class Bank:
             bool: False on failure
         """
         self._vp('withdraw: Sending request to Bank')
-        aes1 = generate_aes(temp_aes_key)
+        aes2, iv = generate_aes(temp_aes_key)
         pkt = struct.pack(">36s36sI", atm_id, card_id, amount)
-        enc_pkt = "w" + aes2.encrypt(pkt)
+        enc_pkt = "w" + iv + aes2.encrypt(pkt)
         self.ser.write(enc_pkt)
 
         while pkt not in "ONE":

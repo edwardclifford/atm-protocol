@@ -8,10 +8,10 @@ from Crypto import Random
 
 
 def generate_aes(self, aes_key):
-    iv = Random.new().read(AES.block_size)
-    aesProg = AES.new(aes_key, AES.MODE_CBC, iv)
+    ctr = os.urandom(16)
+    aesProg = AES.new(aes_key, AES.MODE_CTR, counter:lambda=ctr)
 
-    return aesProg, iv
+    return aesProg
 
 
 temp_aes_key = "\xcaG\xd0J\x87O\xd8\xf7.\x95\xdd\xb7\xf3\x02\xef\xcf@\t\xa7/Q\xe6\x903$\xea\x90H\x1d\xd3\x1f\xd1"
@@ -49,9 +49,9 @@ class Bank:
             str: Balance of account on success
             bool: False on failure
         """
-        aes1, iv = generate_aes(temp_aes_key)
-        pkt = struct.pack(">36s36s", atm_id, card_id)
-        enc_pkt = "b" + iv + aes1.encrypt(pkt)
+        aes1 = generate_aes(temp_aes_key)
+        pkt = "b" + struct.pack(">36s128s", atm_id, card_id)
+        enc_pkt = "b" + aes1.encrypt(pkt) + "EOP"
         self.ser.write(enc_pkt)
 
         while pkt not in "ONE":
@@ -78,10 +78,10 @@ class Bank:
             bool: False on failure
         """
         self._vp('withdraw: Sending request to Bank')
-        aes2, iv = generate_aes(temp_aes_key)
-        pkt = struct.pack(">36s36sI", atm_id, card_id, amount)
-        enc_pkt = "w" + iv + aes2.encrypt(pkt)
-        self.ser.write(enc_pkt)
+        aes2 = generate_aes(temp_aes_key)
+        pkt = struct.pack(">36s128sI", atm_id, card_id, amount)
+        enc_pkt = "w" + aes2.encrypt(pkt) + "EOP"
+        self.ser.write(pkt)
 
         while pkt not in "ONE":
             pkt = self.ser.read()
@@ -92,6 +92,34 @@ class Bank:
         pkt = self.ser.read(72)
         aid, cid = struct.unpack(">36s36s", pkt)
         self._vp('withdraw: Withdrawal accepted')
+        return True
+    def change_pin(self, old_pin, new_pin):
+        """Requests a withdrawal from the account associated with the card_id
+
+        Args:
+            atm_id (str): UUID of the HSM
+            card_id (str): UUID of the ATM card
+            amount (str): Requested amount to withdraw
+
+        Returns:
+            str: hsm_id on success
+            bool: False on failure
+        """
+        self._vp('Change pin: Sending request to Bank')
+        aes3 = generate_aes(temp_aes_key)
+        pkt = struct.pack(">36s128s8s8s", atm_id, card_id, old_pin, new_pin)
+        enc_pkt = "c" + aes3.encrypt(pkt) + "EOP"
+        self.ser.write(enc_pkt)
+
+        while pkt not in "ONE":
+            pkt = self.ser.read()
+
+        if pkt != "O":
+            self._vp('change pin: request denied')
+            return False
+        pkt = self.ser.read(72)
+        aid, cid = struct.unpack(">36s36s", pkt)
+        self._vp('change pin: request accepted')
         return True
 
     def provision_update(self, uuid, pin, balance):

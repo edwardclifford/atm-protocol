@@ -117,13 +117,12 @@ class Bank(object):
             self.db.set_balance(card_id, final_amount)
             self.db.set_atm_num_bills(atm_id, num_bills - amount)
             log("Valid withdrawal")
-            obj3 = AES.new(transaction_AES_key, AES.MODE_CTR, iv)
-            atm_id = obj3.encrypt(atm_id)
-            card_id = obj3.encrypt(card_id)
-            amount = obj3.encrypt(amount)
-            pkt = struct.pack(">16s36s36sI", atm_id, card_id, amount)
+            pkt = struct.pack(">36s128sI", atm_id, card_id, amount)
+            ctr1 = os.urandom(16)
+            obj5 = AES.new(transaction_AES_key, AES.MODE_CTR, counter=ctr1)
+            enc_pkt = obj5.encrypt(pkt) + "EOP"
             self.atm.write(self.GOOD)
-            self.atm.write(pkt)
+            self.atm.write(enc_pkt)
         else:
             self.atm.write(self.BAD)
             log("Insufficient funds in account")
@@ -142,6 +141,9 @@ class Bank(object):
         else:
             log("Valid balance check")
             pkt = struct.pack(">36s36sI", atm_id, card_id, balance)
+            ctr2 = os.urandom(16)
+            obj6 = AES.new(transaction_AES_key, AES.MODE_CTR, counter=ctr)
+            enc_pkt = obj6.encrypt(pkt)
             self.atm.write(self.GOOD)
             self.atm.write(pkt)
     
@@ -154,6 +156,9 @@ class Bank(object):
             self.db.admin_set_pin(card_id, new_pin)
             log("Pin changed")
             pkt = struct.pack(">36s36s", atm_id, card_id)
+            ctr3 = os.urandom(16)
+            obj7 = AES.new(transaction_AES_key, AES.MODE_CTR, counter=ctr)
+            enc_pkt = obj7.encrypt(pkt)
             self.atm.write(self.GOOD)
             self.atm.write(pkt)
     

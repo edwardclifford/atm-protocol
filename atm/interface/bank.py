@@ -50,7 +50,7 @@ class Bank:
             bool: False on failure
         """
         aes1 = generate_aes(temp_aes_key)
-        pkt = "b" + struct.pack(">36s128s", atm_id, card_id)
+        pkt = struct.pack(">32s128s", atm_id, card_id)
         enc_pkt = "b" + aes1.encrypt(pkt) + "EOP"
         self.ser.write(enc_pkt)
 
@@ -59,9 +59,19 @@ class Bank:
 
         if pkt != "O":
             return False
-        pkt = self.ser.read(76)
-        aid, cid, bal = struct.unpack(">36s36sI", pkt)
 
+        pkt = ""
+
+        while pkt[-1:-4] != "EOP":
+            pkt = pkt + self.ser.read()
+
+        list_pkt = list(pkt)
+        list_pkt.pop(-1)
+        list_pkt.pop(-1)
+        list_pkt.pop(-1)
+        pkt = ''.join(list_pkt)
+        dec_pkt = aes1.decrypt(pkt)
+        aid, cid, bal = struct.unpack(">32s128sI", dec_pkt)
         self._vp('check_balance: returning balance')
         return bal
 
@@ -79,7 +89,7 @@ class Bank:
         """
         self._vp('withdraw: Sending request to Bank')
         aes2 = generate_aes(temp_aes_key)
-        pkt = struct.pack(">36s128sI", atm_id, card_id, amount)
+        pkt = struct.pack(">32s128sI", atm_id, card_id, amount)
         enc_pkt = "w" + aes2.encrypt(pkt) + "EOP"
         self.ser.write(pkt)
 
@@ -89,10 +99,20 @@ class Bank:
         if pkt != "O":
             self._vp('withdraw: request denied')
             return False
-        pkt = self.ser.read(72)
-        aid, cid = struct.unpack(">36s36s", pkt)
+
+        pkt = ""
+        while pkt[-1:-4] != "EOP":
+            pkt = pkt + self.ser.read()
+        list_pkt = list(pkt)
+        list_pkt.pop(-1)
+        list_pkt.pop(-1)
+        list_pkt.pop(-1)
+        pkt = ''.join(list_pkt)
+        dec_pkt = aes2.decrypt(pkt)
+        aid, cid, amount = struct.unpack(">32s128sI", dec_pkt)
         self._vp('withdraw: Withdrawal accepted')
         return True
+
     def change_pin(self, old_pin, new_pin):
         """Requests a withdrawal from the account associated with the card_id
 
@@ -107,7 +127,7 @@ class Bank:
         """
         self._vp('Change pin: Sending request to Bank')
         aes3 = generate_aes(temp_aes_key)
-        pkt = struct.pack(">36s128s8s8s", atm_id, card_id, old_pin, new_pin)
+        pkt = struct.pack(">32s128s8s8s", atm_id, card_id, old_pin, new_pin)
         enc_pkt = "c" + aes3.encrypt(pkt) + "EOP"
         self.ser.write(enc_pkt)
 
@@ -117,8 +137,19 @@ class Bank:
         if pkt != "O":
             self._vp('change pin: request denied')
             return False
-        pkt = self.ser.read(72)
-        aid, cid = struct.unpack(">36s36s", pkt)
+
+        pkt = ""
+
+        while pkt[-1:-4] != "EOP":
+            pkt = pkt + self.ser.read()
+
+        list_pkt = list(pkt)
+        list_pkt.pop(-1)
+        list_pkt.pop(-1)
+        list_pkt.pop(-1)
+        pkt = ''.join(list_pkt)
+        dec_pkt = aes3.decrypt(pkt)
+        aid, cid = struct.unpack(">32s128s", dec_pkt)
         self._vp('change pin: request accepted')
         return True
 

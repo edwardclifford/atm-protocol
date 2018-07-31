@@ -10,6 +10,8 @@ import sys
 import serial
 import argparse
 import struct
+from Crypto.Cipher import AES
+import os
 
 
 class Bank(object):
@@ -27,14 +29,52 @@ class Bank(object):
             command = self.atm.read()
             if command == 'w':
                 log("Withdrawing")
-                pkt = self.atm.read(76)
-                atm_id, card_id, amount = struct.unpack(">36s36sI", pkt)
+                pkt = ""
+                while pkt[-1:-4] != "EOP":
+                    pkt = pkt + self.atm.read()
+                list_pkt = list(pkt)
+                list_pkt.pop(-1)
+                list_pkt.pop(-1)
+                list_pkt.pop(-1)
+                pkt = ''.join(list_pkt)
+                # someone needs to send counter
+                ctr = os.urandom(16)
+                obj2 = AES.new(transaction_AES_key, AES.MODE_CTR, counter=ctr)
+                dec_pkt = obj2.decrypt(pkt)
+                atm_id, card_id, amount = struct.unpack(">36s128sI", pkt)
                 self.withdraw(atm_id, card_id, amount)
             elif command == 'b':
                 log("Checking balance")
-                pkt = self.atm.read(72)
-                atm_id, card_id = struct.unpack(">36s36s", pkt)
+                pkt = ""
+                while pkt[-1:-4] != "EOP":
+                    pkt = pkt + self.atm.read()
+                list_pkt = list(pkt)
+                list_pkt.pop(-1)
+                list_pkt.pop(-1)
+                list_pkt.pop(-1)
+                pkt = ''.join(list_pkt)
+                # someone needs to send counter
+                ctr = os.urandom(16)
+                obj3 = AES.new(transaction_AES_key, AES.MODE_CTR, counter=ctr)
+                dec_pkt = obj3.decrypt(pkt)
+                atm_id, card_id = struct.unpack(">36s128s", pkt)
                 self.check_balance(atm_id, card_id)
+            elif command == "c":
+                log("Changing pin")
+                pkt = ""
+                while pkt[-1:-4] != "EOP":
+                    pkt = pkt + self.atm.read()
+                list_pkt = list(pkt)
+                list_pkt.pop(-1)
+                list_pkt.pop(-1)
+                list_pkt.pop(-1)
+                pkt = ''.join(list_pkt)
+                # someone needs to send counter
+                ctr = os.urandom(16)
+                obj4 = AES.new(transaction_AES_key, AES.MODE_CTR, counter=ctr)
+                dec_pkt = obj4.decrypt(pkt)
+                atm_id, card_id, old_pin, new_pin = struct.unpack(">36s128s8s8s", pkt)
+                self.change_pin(atm_id, card_id, old_pin, new_pin)
             elif command != '':
                 self.atm.write(self.ERROR)
 
@@ -77,7 +117,11 @@ class Bank(object):
             self.db.set_balance(card_id, final_amount)
             self.db.set_atm_num_bills(atm_id, num_bills - amount)
             log("Valid withdrawal")
-            pkt = struct.pack(">36s36sI", atm_id, card_id, amount)
+            obj3 = AES.new(transaction_AES_key, AES.MODE_CTR, iv)
+            atm_id = obj3.encrypt(atm_id)
+            card_id = obj3.encrypt(card_id)
+            amount = obj3.encrypt(amount)
+            pkt = struct.pack(">16s36s36sI", atm_id, card_id, amount)
             self.atm.write(self.GOOD)
             self.atm.write(pkt)
         else:
@@ -100,6 +144,19 @@ class Bank(object):
             pkt = struct.pack(">36s36sI", atm_id, card_id, balance)
             self.atm.write(self.GOOD)
             self.atm.write(pkt)
+    
+    def change_pin(self, atm_id, card_id, old_pin, new_pin):
+        if self.db.admin_get_pin(card_id) != old_pin:
+            self.atm.write(self.BAD)
+            log("Invalid pin")
+            return
+        else:
+            self.db.admin_set_pin(card_id, new_pin)
+            log("Pin changed")
+            pkt = struct.pack(">36s36s", atm_id, card_id)
+            self.atm.write(self.GOOD)
+            self.atm.write(pkt)
+    
 
 
 def parse_args():

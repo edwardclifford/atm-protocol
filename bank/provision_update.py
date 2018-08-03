@@ -27,12 +27,13 @@ if __name__ == "__main__":
                 continue
 
             print "Reading provisioning info..."
-            pkt = atm.read(48)
-            uuid, pin, balance = struct.unpack(">36s8sI", pkt)
+            pkt = atm.read(256)
+            uuid, pin, balance, tampercode, key, iv = struct.unpack(">128s32s16s32s32s16s", pkt)
+            balance = int(balance) #converts balance to int (padded with leading zeros)
 
             print "Updating database..."
             db = DB(db_file)
-            db.admin_create_account(uuid, balance)
+            db.admin_create_account(uuid, pin, balance, tampercode, key, iv)
             print "Account added!"
             print
     except KeyboardInterrupt:

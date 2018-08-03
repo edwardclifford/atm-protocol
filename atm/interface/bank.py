@@ -15,9 +15,6 @@ def generate_aes(self, aes_key):
     return aesProg
 
 
-temp_aes_key = "\xcaG\xd0J\x87O\xd8\xf7.\x95\xdd\xb7\xf3\x02\xef\xcf@\t\xa7/Q\xe6\x903$\xea\x90H\x1d\xd3\x1f\xd1"
-
-
 class Bank:
     """Interface for communicating with the bank
 
@@ -39,7 +36,7 @@ class Bank:
         if self.verbose:
             stream("card: " + msg)
 
-    def check_balance(self, atm_id, card_id):
+    def check_balance(self, atm_id, card_id, pin, aes_key, aes_ctr):
         """Requests the balance of the account associated with the card_id
 
         Args:
@@ -50,9 +47,10 @@ class Bank:
             str: Balance of account on success
             bool: False on failure
         """
-        aes1 = generate_aes(temp_aes_key)
+
+        aes1 = AES.new(aes_key, AES.MODE_CTR, counter=lambda:aes_ctr)
         pkt = struct.pack(">32s128s", atm_id, card_id)
-        enc_pkt = "b" + aes1.encrypt(pkt) + "EOP"
+        enc_pkt = "b" + atm_id + aes1.encrypt(pkt) + "EOP"
         self.ser.write(enc_pkt)
 
         while pkt not in "ONE":

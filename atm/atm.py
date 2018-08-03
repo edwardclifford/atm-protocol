@@ -9,7 +9,7 @@ import argparse
 from Crypto.Cipher import AES
 from Crypto import Random
 import random
-
+newTamp = ""
 log = logging.getLogger('')
 log.setLevel(logging.DEBUG)
 log_format = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
@@ -27,6 +27,9 @@ class ATM(cmd.Cmd, object):
     """
     intro = 'Welcome to your friendly ATM! Press ? for a list of commands\r\n'
     prompt = '1. Check Balance\r\n2. Withdraw\r\n3. Change PIN\r\n> '
+
+    atm_local_key = ""
+    atm_local_ctr = ""
 
     def __init__(self, bank, card, config_path="config.json",
                  billfile="billfile.out", verbose=False):
@@ -48,7 +51,7 @@ class ATM(cmd.Cmd, object):
 
     def config(self):
         if not os.path.isfile(self.config_path):
-            cfg = {"uuid": os.urandom(36).encode('hex'), "dispensed": 0,
+            cfg = {"uuid": os.urandom(32).encode('hex'), "dispensed": 0,
                    "bills": ["example bill %5d" % i for i in range(128)]}
             return cfg
         else:
@@ -73,12 +76,12 @@ class ATM(cmd.Cmd, object):
 
         try:
             self._vp('check_balance: Requesting card_id using inputted pin')
-            card_id = self.card.check_balance(pin)
+            card_id = self.card.check_balance(pin, atm_local_key, atm_local_ctr)
 
             # get balance from bank if card accepted PIN
             if card_id:
                 self._vp('check_balance: Requesting balance from Bank')
-                res = self.bank.check_balance(self.uuid, card_id)
+                res = self.bank.check_balance(self.uuid, card_id, pin)
                 if res:
 		    print "Balance is: " + str(res)
                     return res

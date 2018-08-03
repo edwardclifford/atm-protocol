@@ -2,6 +2,7 @@ import logging
 import struct
 import time
 import serial
+from bank import generate_aes
 
 
 class NotProvisioned(Exception):
@@ -209,7 +210,7 @@ class Card(object):
 
         msg = self._pull_msg()
         if msg != 'P':
-            self._vp('Card alredy provisioned!', logging.error)
+            self._vp('Card already provisioned!', logging.error)
             return False
         self._vp('Card sent provisioning message')
 

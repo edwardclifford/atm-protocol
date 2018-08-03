@@ -5,6 +5,7 @@ import struct
 import serial
 from Crypto.Cipher import AES
 from Crypto import Random
+from bank.bank import read_pkt
 
 
 def generate_aes(self, aes_key):
@@ -60,16 +61,7 @@ class Bank:
         if pkt != "O":
             return False
 
-        pkt = ""
-
-        while pkt[-1:-4] != "EOP":
-            pkt = pkt + self.ser.read()
-
-        list_pkt = list(pkt)
-        list_pkt.pop(-1)
-        list_pkt.pop(-1)
-        list_pkt.pop(-1)
-        pkt = ''.join(list_pkt)
+        pkt = read_pkt()
         dec_pkt = aes1.decrypt(pkt)
         aid, cid, bal = struct.unpack(">32s128sI", dec_pkt)
         self._vp('check_balance: returning balance')
@@ -100,30 +92,23 @@ class Bank:
             self._vp('withdraw: request denied')
             return False
 
-        pkt = ""
-        while pkt[-1:-4] != "EOP":
-            pkt = pkt + self.ser.read()
-        list_pkt = list(pkt)
-        list_pkt.pop(-1)
-        list_pkt.pop(-1)
-        list_pkt.pop(-1)
-        pkt = ''.join(list_pkt)
+        pkt = read_pkt()
         dec_pkt = aes2.decrypt(pkt)
         aid, cid, amount = struct.unpack(">32s128sI", dec_pkt)
         self._vp('withdraw: Withdrawal accepted')
         return True
 
-    def change_pin(self, old_pin, new_pin):
-        """Requests a withdrawal from the account associated with the card_id
+    def change_pin(self, atm_id, card_id, old_pin, new_pin):
+        """Requests to change pin of account associated with
 
         Args:
             atm_id (str): UUID of the HSM
             card_id (str): UUID of the ATM card
-            amount (str): Requested amount to withdraw
+            old_pin (str): current 8-digit pin associated with account
+            new_pin (str): user-entered 8-digit pin to replace old_pin
 
         Returns:
-            str: hsm_id on success
-            bool: False on failure
+            bool: True on success, False on failure
         """
         self._vp('Change pin: Sending request to Bank')
         aes3 = generate_aes(temp_aes_key)
@@ -138,16 +123,7 @@ class Bank:
             self._vp('change pin: request denied')
             return False
 
-        pkt = ""
-
-        while pkt[-1:-4] != "EOP":
-            pkt = pkt + self.ser.read()
-
-        list_pkt = list(pkt)
-        list_pkt.pop(-1)
-        list_pkt.pop(-1)
-        list_pkt.pop(-1)
-        pkt = ''.join(list_pkt)
+        pkt = read_pkt()
         dec_pkt = aes3.decrypt(pkt)
         aid, cid = struct.unpack(">32s128s", dec_pkt)
         self._vp('change pin: request accepted')

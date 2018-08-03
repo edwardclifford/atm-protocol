@@ -14,6 +14,24 @@ from Crypto.Cipher import AES
 import os
 
 temp_aes_key = "\xcaG\xd0J\x87O\xd8\xf7.\x95\xdd\xb7\xf3\x02\xef\xcf@\t\xa7/Q\xe6\x903$\xea\x90H\x1d\xd3\x1f\xd1"
+
+
+def read_pkt():
+    """Reads a packet of undefined length from serial"""
+    # since encrypted packet is undefined length, read from serial until EOP
+    pkt = ""
+    while pkt[-1:-4] != "EOP":
+        pkt = pkt + self.atm.read()
+    list_pkt = list(pkt)
+    # remove "EOP" signifier from the packet so it's the right length to decrypt and unpack
+    list_pkt.pop(-1)
+    list_pkt.pop(-1)
+    list_pkt.pop(-1)
+    pkt = ''.join(list_pkt)
+    # someone needs to send counter
+    return pkt
+
+
 class Bank(object):
     GOOD = "O"
     BAD = "N"
@@ -29,14 +47,7 @@ class Bank(object):
             command = self.atm.read()
             if command == 'w':
                 log("Withdrawing")
-                pkt = ""
-                while pkt[-1:-4] != "EOP":
-                    pkt = pkt + self.atm.read()
-                list_pkt = list(pkt)
-                list_pkt.pop(-1)
-                list_pkt.pop(-1)
-                list_pkt.pop(-1)
-                pkt = ''.join(list_pkt)
+                pkt = read_pkt()
                 # someone needs to send counter
                 ctr = os.urandom(16)
                 obj2 = AES.new(temp_aes_key, AES.MODE_CTR, counter=ctr)
@@ -45,14 +56,7 @@ class Bank(object):
                 self.withdraw(atm_id, card_id, amount)
             elif command == 'b':
                 log("Checking balance")
-                pkt = ""
-                while pkt[-1:-4] != "EOP":
-                    pkt = pkt + self.atm.read()
-                list_pkt = list(pkt)
-                list_pkt.pop(-1)
-                list_pkt.pop(-1)
-                list_pkt.pop(-1)
-                pkt = ''.join(list_pkt)
+                pkt = read_pkt()
                 # someone needs to send counter
                 ctr = os.urandom(16)
                 obj3 = AES.new(temp_aes_key, AES.MODE_CTR, counter=ctr)
@@ -61,14 +65,7 @@ class Bank(object):
                 self.check_balance(atm_id, card_id)
             elif command == "c":
                 log("Changing pin")
-                pkt = ""
-                while pkt[-1:-4] != "EOP":
-                    pkt = pkt + self.atm.read()
-                list_pkt = list(pkt)
-                list_pkt.pop(-1)
-                list_pkt.pop(-1)
-                list_pkt.pop(-1)
-                pkt = ''.join(list_pkt)
+                pkt = read_pkt()
                 # someone needs to send counter
                 ctr = os.urandom(16)
                 obj4 = AES.new(temp_aes_key, AES.MODE_CTR, counter=ctr)
@@ -79,7 +76,7 @@ class Bank(object):
                 self.atm.write(self.ERROR)
 
     def withdraw(self, atm_id, card_id, amount):
-        print "Withdraw attempt: " + card_id 
+        print "Withdraw attempt: " + card_id
         try:
             amount = int(amount)
             atm_id = str(atm_id)
@@ -146,8 +143,16 @@ class Bank(object):
             enc_pkt = obj6.encrypt(pkt) + "EOP"
             self.atm.write(self.GOOD)
             self.atm.write(pkt)
-    
+
     def change_pin(self, atm_id, card_id, old_pin, new_pin):
+        """Updates the pin in the bank's database, provided that the old pin is correct
+
+        Args:
+            atm_id (str): UUID of the HSM
+            card_id (str): UUID of the ATM card
+            old_pin (str): current 8-digit pin associated with account
+            new_pin (str): user-entered 8-digit pin to replace old_pin
+        """
         if self.db.admin_get_pin(card_id) != old_pin:
             self.atm.write(self.BAD)
             log("Invalid pin")
@@ -165,7 +170,7 @@ class Bank(object):
             enc_pkt = obj7.encrypt(pkt)
             self.atm.write(self.GOOD) + "EOP"
             self.atm.write(pkt)
-    
+
 
 
 def parse_args():
@@ -188,7 +193,7 @@ def main():
 
     bank = Bank(args.port, args.baudrate)
     try:
-        print "Starting up bank..."        
+        print "Starting up bank..."
         bank.start()
     except KeyboardInterrupt:
         print "Shutting down bank..."

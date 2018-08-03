@@ -6,6 +6,9 @@ from interface import card, bank
 import os
 import json
 import argparse
+from Crypto.Cipher import AES
+from Crypto import Random
+import random
 
 log = logging.getLogger('')
 log.setLevel(logging.DEBUG)
@@ -54,8 +57,7 @@ class ATM(cmd.Cmd, object):
 
     def update(self):
         with open(self.config_path, "w") as f:
-            f.write(json.dumps({"uuid": self.uuid.encode("hex"), "dispensed": self.dispensed,
-                                "bills": self.bills}))
+            f.write(json.dumps({"uuid": self.uuid.encode("hex"), "dispensed": self.dispensed,"bills": self.bills}))
 
     def check_balance(self, pin):
         """Tries to check the balance of the account associated with the
@@ -68,6 +70,7 @@ class ATM(cmd.Cmd, object):
             str: Balance on success
             bool: False on failure
         """
+
         try:
             self._vp('check_balance: Requesting card_id using inputted pin')
             card_id = self.card.check_balance(pin)

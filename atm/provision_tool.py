@@ -27,15 +27,17 @@ if __name__ == "__main__":
     # provision card
     print "Provisioning card..."
     card = Card(c_port, baudrate=c_baud, verbose=True)
-    uuid = urandom(18).encode("hex")
-    if card.provision(uuid, pin):
+    uuid = urandom(128).encode("hex")
+    tampercode = urandom(128).encode("hex")
+    key = urandom(32).encode("hex")
+    iv = urandom(16).encode("hex")
+    if card.provision(uuid, tampercode, key, iv):
         print "Card provisioned!"
 
         # update bank
         print "Updating bank..."
         bank = Bank(b_port)
-        bank.provision_update(uuid, pin, balance)
+        bank.provision_update(uuid, pin, balance, tampercode, key, iv)
         print "Provisioning successful"
     else:
         print "Card already provisioned!"
-

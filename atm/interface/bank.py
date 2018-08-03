@@ -79,6 +79,6 @@ class Bank:
         self._vp('withdraw: Withdrawal accepted')
         return True
 
-    def provision_update(self, uuid, pin, balance):
-        pkt = struct.pack(">36s8sI", uuid, pin, balance)
+    def provision_update(self, uuid, pin, balance, tampercode, key, iv):
+        pkt = struct.pack(">128s32s16s32s32s16s", uuid, pin, balance, tampercode, key, iv)
         self.ser.write("p" + pkt)

@@ -81,7 +81,7 @@ class ATM(cmd.Cmd, object):
                     return res
             self._vp('check_balance failed')
             return False
-        except NotProvisioned:
+        except card.NotProvisioned:
             self._vp('ATM card has not been provisioned!')
             return False
 
@@ -103,7 +103,7 @@ class ATM(cmd.Cmd, object):
                 return True
             self._vp('change_pin failed')
             return False
-        except NotProvisioned:
+        except card.NotProvisioned:
             self._vp('ATM card has not been provisioned!')
             return False
 
@@ -141,7 +141,7 @@ class ATM(cmd.Cmd, object):
         except ValueError:
             self._vp('amount must be an int')
             return False
-        except NotProvisioned:
+        except card.NotProvisioned:
             self._vp('ATM card has not been provisioned!')
             return False
 

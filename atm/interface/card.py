@@ -169,8 +169,8 @@ class Card(object):
         """
         self._sync(False)
 
-        if not self._authenticate(pin):
-            return False
+        #if not self._authenticate(pin):
+        #    return False
 
         self._send_op(self.CHECK_BAL)
 
@@ -195,7 +195,7 @@ class Card(object):
 
         return self._get_uuid()
 
-    def provision(self, uuid, pin):
+    def provision(self, uuid, tampercode, key, iv):
         """Attempts to provision a new ATM card
 
         Args:
@@ -213,15 +213,26 @@ class Card(object):
             return False
         self._vp('Card sent provisioning message')
 
-        self._push_msg('%s\00' % pin)
-        while self._pull_msg() != 'K':
-            self._vp('Card hasn\'t accepted PIN', logging.error)
-        self._vp('Card accepted PIN')
-
         self._push_msg('%s\00' % uuid)
         while self._pull_msg() != 'K':
-            self._vp('Card hasn\'t accepted uuid', logging.error)
-        self._vp('Card accepted uuid')
+            self._vp('Card hasn\'t accepted UUID', logging.error)
+        self._vp('Card accepted UUID')
+
+        self._push_msg('%s\00' % tampercode)
+        while self._pull_msg() != 'K':
+            self._vp('Card hasn\'t accepted tampercode', logging.error)
+        self._vp('Card accepted tampercode')
+
+        self._push_msg('%s\00' % key)
+        while self._pull_msg() != 'K':
+            self._vp('Card hasn\'t accepted key', logging.error)
+        self._vp('Card accepted key')
+
+        self._push_msg('%s\00' % iv)
+        while self._pull_msg() != 'K':
+            self._vp('Card hasn\'t accepted iv', logging.error)
+        self._vp('Card accepted iv')
+
 
         self._vp('Provisioning complete')
 

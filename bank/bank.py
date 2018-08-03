@@ -39,7 +39,7 @@ class Bank(object):
                 self.atm.write(self.ERROR)
 
     def withdraw(self, atm_id, card_id, amount):
-        print "Withdraw attempt: " + card_id 
+        print "Withdraw attempt: " + card_id
         try:
             amount = int(amount)
             atm_id = str(atm_id)
@@ -97,7 +97,7 @@ class Bank(object):
             log("Bad card ID")
         else:
             log("Valid balance check")
-            pkt = struct.pack(">36s36sI", atm_id, card_id, balance)
+            pkt = struct.pack(">36s36sI", atm_id, card_id, balance) 
             self.atm.write(self.GOOD)
             self.atm.write(pkt)
 
@@ -122,7 +122,7 @@ def main():
 
     bank = Bank(args.port, args.baudrate)
     try:
-        print "Starting up bank..."        
+        print "Starting up bank..."
         bank.start()
     except KeyboardInterrupt:
         print "Shutting down bank..."

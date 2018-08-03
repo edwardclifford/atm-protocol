@@ -78,7 +78,7 @@ class DB(object):
 
         Returns:
             (string or None): Returns atm_id on Success. None otherwise.
-        """ 
+        """
         return 1000
 
     def get_atm_num_bills(self, atm_id):
@@ -101,13 +101,13 @@ class DB(object):
     # ADMIN INTERFACE FUNCTIONS #
     #############################
 
-    def admin_create_account(self, card_id, amount):
+    def admin_create_account(self, card_id, pin, amount, tampercode, key, iv):
         """create account with account_name, card_id, and amount
 
         Returns:
             (bool): Returns True on Success. False otherwise.
         """
-        return self.modify('cards', card_id, ["bal"], [amount])
+        return self.modify('cards', card_id, ["pin"], [pin], ["bal"], [amount], ["tampercode"], [tampercode], ["key"], [key], ["iv"], [iv])
 
     def admin_create_atm(self, atm_id):
         """create atm with atm_id

@@ -13,7 +13,7 @@
 <v>Output</v>
 </TreeKeys>
 <TreeStates>
-<CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="ectf-workspace\CARD\CARD.cydwr\Pins">
+<CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="ectf-workspace\CARD\Header Files">
 <ExpandedNodeIds>
 <v>ectf-workspace</v>
 <v>ectf-workspace\CARD</v>
@@ -27,63 +27,32 @@
 <v>ectf-workspace\CARD\CARD.cydwr\Directives</v>
 <v>ectf-workspace\CARD\CARD.cydwr\Flash Security</v>
 <v>ectf-workspace\CARD\Header Files</v>
+<v>ectf-workspace\CARD\Header Files\aes.h</v>
+<v>ectf-workspace\CARD\Header Files\asn1.h</v>
+<v>ectf-workspace\CARD\Header Files\base58.h</v>
 <v>ectf-workspace\CARD\Header Files\cyapicallbacks.h</v>
+<v>ectf-workspace\CARD\Header Files\drbg.h</v>
+<v>ectf-workspace\CARD\Header Files\ecdsa.h</v>
+<v>ectf-workspace\CARD\Header Files\finite_field.h</v>
+<v>ectf-workspace\CARD\Header Files\hmac.h</v>
+<v>ectf-workspace\CARD\Header Files\keychain.h</v>
+<v>ectf-workspace\CARD\Header Files\pbkdf2.h</v>
+<v>ectf-workspace\CARD\Header Files\random.h</v>
+<v>ectf-workspace\CARD\Header Files\ripemd160.h</v>
+<v>ectf-workspace\CARD\Header Files\sha256.h</v>
+<v>ectf-workspace\CARD\Header Files\strong-arm.h</v>
+<v>ectf-workspace\CARD\Header Files\threefish.h</v>
 <v>ectf-workspace\CARD\Header Files\usbserialprotocol.h</v>
+<v>ectf-workspace\CARD\Header Files\utils.h</v>
 <v>ectf-workspace\CARD\Source Files</v>
+<v>ectf-workspace\CARD\Source Files\aes256.c</v>
 <v>ectf-workspace\CARD\Source Files\main.c</v>
+<v>ectf-workspace\CARD\Source Files\sha256.c</v>
 <v>ectf-workspace\CARD\Source Files\usbserialprotocol.c</v>
 <v>ectf-workspace\CARD\Generated_Source</v>
 <v>ectf-workspace\CARD\Generated_Source\PSoC4</v>
 </ExpandedNodeIds>
-<VisibleNodeIds>
-<v>ectf-workspace</v>
-<v>ectf-workspace\CARD</v>
-<v>ectf-workspace\CARD\TopDesign</v>
-<v>ectf-workspace\CARD\CARD.cydwr</v>
-<v>ectf-workspace\CARD\CARD.cydwr\Pins</v>
-<v>ectf-workspace\CARD\CARD.cydwr\Analog</v>
-<v>ectf-workspace\CARD\CARD.cydwr\Clocks</v>
-<v>ectf-workspace\CARD\CARD.cydwr\Interrupts</v>
-<v>ectf-workspace\CARD\CARD.cydwr\System</v>
-<v>ectf-workspace\CARD\CARD.cydwr\Directives</v>
-<v>ectf-workspace\CARD\CARD.cydwr\Flash Security</v>
-<v>ectf-workspace\CARD\Header Files</v>
-<v>ectf-workspace\CARD\Header Files\cyapicallbacks.h</v>
-<v>ectf-workspace\CARD\Header Files\usbserialprotocol.h</v>
-<v>ectf-workspace\CARD\Source Files</v>
-<v>ectf-workspace\CARD\Source Files\main.c</v>
-<v>ectf-workspace\CARD\Source Files\usbserialprotocol.c</v>
-<v>ectf-workspace\CARD\Generated_Source</v>
-<v>ectf-workspace\CARD\Generated_Source\PSoC4</v>
-<v>ectf-workspace\CARD\Generated_Source\PSoC4\ADC</v>
-<v>ectf-workspace\CARD\Generated_Source\PSoC4\ADC_0</v>
-<v>ectf-workspace\CARD\Generated_Source\PSoC4\ADC_1M</v>
-<v>ectf-workspace\CARD\Generated_Source\PSoC4\ADC_1P</v>
-<v>ectf-workspace\CARD\Generated_Source\PSoC4\ADC_2</v>
-<v>ectf-workspace\CARD\Generated_Source\PSoC4\ADC_2_Buffer</v>
-<v>ectf-workspace\CARD\Generated_Source\PSoC4\ADC_3</v>
-<v>ectf-workspace\CARD\Generated_Source\PSoC4\ADC_3_Buffer</v>
-<v>ectf-workspace\CARD\Generated_Source\PSoC4\ADC_EOC_Int</v>
-<v>ectf-workspace\CARD\Generated_Source\PSoC4\ADC_intClock</v>
-<v>ectf-workspace\CARD\Generated_Source\PSoC4\ADC_IRQ</v>
-<v>ectf-workspace\CARD\Generated_Source\PSoC4\CapSense</v>
-<v>ectf-workspace\CARD\Generated_Source\PSoC4\CapSense_SampleClk</v>
-<v>ectf-workspace\CARD\Generated_Source\PSoC4\CapSense_SenseClk</v>
-<v>ectf-workspace\CARD\Generated_Source\PSoC4\CapSense_Sns</v>
-<v>ectf-workspace\CARD\Generated_Source\PSoC4\Clock_1MHz</v>
-<v>ectf-workspace\CARD\Generated_Source\PSoC4\Comp_0</v>
-<v>ectf-workspace\CARD\Generated_Source\PSoC4\Comp_1</v>
-<v>ectf-workspace\CARD\Generated_Source\PSoC4\CompM_0</v>
-<v>ectf-workspace\CARD\Generated_Source\PSoC4\CompM_1</v>
-<v>ectf-workspace\CARD\Generated_Source\PSoC4\CompP_0</v>
-<v>ectf-workspace\CARD\Generated_Source\PSoC4\CompP_1</v>
-<v>ectf-workspace\CARD\Generated_Source\PSoC4\cy_boot</v>
-<v>ectf-workspace\CARD\Generated_Source\PSoC4\cy_lfclk</v>
-<v>ectf-workspace\CARD\Generated_Source\PSoC4\DieTemp</v>
-<v>ectf-workspace\CARD\Generated_Source\PSoC4\Em_EEPROM_Dynamic</v>
-<v>ectf-workspace\CARD\Generated_Source\PSoC4\Input_0_Int</v>
-<v>ectf-workspace\CARD\Generated_Source\PSoC4\Input_1_Int</v>
-</VisibleNodeIds>
+<VisibleNodeIds />
 </CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
 <CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="">
 <ExpandedNodeIds>
@@ -92,12 +61,7 @@
 <v>ectf-workspace\CARD\TopDesign</v>
 <v>ectf-workspace\CARD\TopDesign\TopDesign.cysch</v>
 </ExpandedNodeIds>
-<VisibleNodeIds>
-<v>ectf-workspace</v>
-<v>ectf-workspace\CARD</v>
-<v>ectf-workspace\CARD\TopDesign</v>
-<v>ectf-workspace\CARD\TopDesign\TopDesign.cysch</v>
-</VisibleNodeIds>
+<VisibleNodeIds />
 </CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
 <CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="">
 <ExpandedNodeIds>
@@ -127,6 +91,7 @@
 <v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\ADC_intClock.lst</v>
 <v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\ADC_IRQ.lst</v>
 <v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\ADC_PM.lst</v>
+<v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\aes256.lst</v>
 <v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\CapSense.lst</v>
 <v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\CapSense_CSHL.lst</v>
 <v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\CapSense_INT.lst</v>
@@ -184,6 +149,7 @@
 <v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\PWM_2_Out.lst</v>
 <v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\PWM_2_Out_PM.lst</v>
 <v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\PWM_2_PM.lst</v>
+<v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\sha256.lst</v>
 <v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\Timer.lst</v>
 <v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\Timer_Int.lst</v>
 <v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\Timer_Pin.lst</v>
@@ -212,55 +178,7 @@
 <v>ectf-workspace\CARD\CARD.rpt</v>
 <v>ectf-workspace\CARD\CARD_timing.html</v>
 </ExpandedNodeIds>
-<VisibleNodeIds>
-<v>ectf-workspace</v>
-<v>ectf-workspace\CARD</v>
-<v>ectf-workspace\CARD\CortexM0</v>
-<v>ectf-workspace\CARD\CortexM0\ARM_GCC_541</v>
-<v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug</v>
-<v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files</v>
-<v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\ADC.lst</v>
-<v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\ADC_0.lst</v>
-<v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\ADC_0_PM.lst</v>
-<v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\ADC_1M.lst</v>
-<v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\ADC_1M_PM.lst</v>
-<v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\ADC_1P.lst</v>
-<v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\ADC_1P_PM.lst</v>
-<v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\ADC_2.lst</v>
-<v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\ADC_2_Buffer.lst</v>
-<v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\ADC_2_Buffer_PM.lst</v>
-<v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\ADC_2_PM.lst</v>
-<v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\ADC_3.lst</v>
-<v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\ADC_3_Buffer.lst</v>
-<v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\ADC_3_Buffer_PM.lst</v>
-<v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\ADC_3_PM.lst</v>
-<v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\ADC_EOC_Int.lst</v>
-<v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\ADC_INT.lst</v>
-<v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\ADC_intClock.lst</v>
-<v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\ADC_IRQ.lst</v>
-<v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\ADC_PM.lst</v>
-<v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\CapSense.lst</v>
-<v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\CapSense_CSHL.lst</v>
-<v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\CapSense_INT.lst</v>
-<v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\CapSense_PM.lst</v>
-<v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\CapSense_SampleClk.lst</v>
-<v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\CapSense_SenseClk.lst</v>
-<v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\CapSense_SMS.lst</v>
-<v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\CapSense_TunerHelper.lst</v>
-<v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\Clock_1MHz.lst</v>
-<v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\Cm0Start.lst</v>
-<v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\Comp_0.lst</v>
-<v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\Comp_0_PM.lst</v>
-<v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\Comp_1.lst</v>
-<v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\Comp_1_PM.lst</v>
-<v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\CompM_0.lst</v>
-<v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\CompM_0_PM.lst</v>
-<v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\CompM_1.lst</v>
-<v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\CompM_1_PM.lst</v>
-<v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\CompP_0.lst</v>
-<v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\CompP_0_PM.lst</v>
-<v>ectf-workspace\CARD\CortexM0\ARM_GCC_541\Debug\Listing Files\CompP_1.lst</v>
-</VisibleNodeIds>
+<VisibleNodeIds />
 </CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
 </TreeStates>
 <TreeKeysV2>
@@ -293,31 +211,7 @@
 <v>ectf-workspace\CARD\TCPWM_P4_v2_10</v>
 <v>ectf-workspace\CARD\TCPWM_P4_v2_10\TCPWM_P4_v2_10.pdf</v>
 </ExpandedNodeIds>
-<VisibleNodeIds>
-<v>ectf-workspace</v>
-<v>ectf-workspace\CARD</v>
-<v>ectf-workspace\CARD\PSoC 4 Architecture TRM</v>
-<v>ectf-workspace\CARD\PSoC 4200 Family Datasheet</v>
-<v>ectf-workspace\CARD\System Reference Guides</v>
-<v>ectf-workspace\CARD\System Reference Guides\cy_boot_v5_70</v>
-<v>ectf-workspace\CARD\System Reference Guides\cy_lfclk_v1_20</v>
-<v>ectf-workspace\CARD\ADC_SAR_SEQ_P4_v2_50.pdf</v>
-<v>ectf-workspace\CARD\CapSense_CSD_P4_v2_60.pdf</v>
-<v>ectf-workspace\CARD\cy_clock_v2_20.pdf</v>
-<v>ectf-workspace\CARD\cy_gsref_v2_10.pdf</v>
-<v>ectf-workspace\CARD\cy_isr_v1_70</v>
-<v>ectf-workspace\CARD\cy_isr_v1_70\cy_isr_v1_70.pdf</v>
-<v>ectf-workspace\CARD\cy_pins_v2_20</v>
-<v>ectf-workspace\CARD\cy_pins_v2_20\cy_pins_v2_20.pdf</v>
-<v>ectf-workspace\CARD\DieTemp_P4_v1_0.pdf</v>
-<v>ectf-workspace\CARD\LPComp_P4_v2_20</v>
-<v>ectf-workspace\CARD\LPComp_P4_v2_20\LPComp_P4_v2_20.pdf</v>
-<v>ectf-workspace\CARD\OpAmp_P4_v1_20</v>
-<v>ectf-workspace\CARD\OpAmp_P4_v1_20\OpAmp_P4_v1_20.pdf</v>
-<v>ectf-workspace\CARD\SCB_P4_v4_0.pdf</v>
-<v>ectf-workspace\CARD\TCPWM_P4_v2_10</v>
-<v>ectf-workspace\CARD\TCPWM_P4_v2_10\TCPWM_P4_v2_10.pdf</v>
-</VisibleNodeIds>
+<VisibleNodeIds />
 </CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
 </TreeStatesV2>
 </CyGuid_1b906a0f-a7b6-4e4d-a428-82f98b53cb35>
@@ -326,9 +220,11 @@
 </CyGuid_fdba8dfd-b15b-4469-9bbb-9e40c3e70997>
 <Unloaded />
 <OpenDocs>
-<name v=".\CARD.cydsn\CARD.cydwr" />
-<name v=".\CARD.cydsn\TopDesign\TopDesign.cysch" />
 <name v=".\CARD.cydsn\main.c" />
+<name v=".\CARD.cydsn\usbserialprotocol.c" />
+<name v="..\strong-arm-master\src\aes\aes256.c" />
+<name v="..\strong-arm-master\src\sha256\sha256.c" />
+<name v="..\strong-arm-master\include\strong-arm\aes.h" />
 </OpenDocs>
 <OpenDocsLayout><![CDATA[<?xml version="1.0"?><!--
 
@@ -336,7 +232,7 @@
   Copyright (c) 2001-2016 Actipro Software LLC.  All rights reserved.
   http://www.actiprosoftware.com
 
---><DocumentLayout Version="1.0"><LayoutData><TabbedMdiRootContainer Orientation="Horizontal"><TabbedMdiContainer Size="655, 702" SelectedTabbedMdiWindow="fc4af627-d6b3-4958-9775-5c0a8cb586a0"><ToolWindow Key="Start Page:bd4649ab-da6b-4d04-a663-c722b8bf99db:Start Page" Guid="e8f1aec4-9d2a-41c2-95ab-87156c202070" /><DocumentWindow Key="D:\BWSI\Example Code\2018-ectf-insecure-example-bwsi_port\CARD.cydsn\CARD.cydwr" Guid="fc4af627-d6b3-4958-9775-5c0a8cb586a0" /><DocumentWindow Key="D:\BWSI\Example Code\2018-ectf-insecure-example-bwsi_port\CARD.cydsn\TopDesign\TopDesign.cysch" Guid="97d6c3be-3c1f-4fdc-bcaf-56793a0b4f26" /><DocumentWindow Key="D:\BWSI\Example Code\2018-ectf-insecure-example-bwsi_port\CARD.cydsn\main.c" Guid="a0648764-1fdd-44a0-9c89-59bff9953185" /></TabbedMdiContainer></TabbedMdiRootContainer><FloatingContainers /></LayoutData></DocumentLayout>]]></OpenDocsLayout>
+--><DocumentLayout Version="1.0"><LayoutData><TabbedMdiRootContainer Orientation="Horizontal"><TabbedMdiContainer Size="1710, 756" SelectedTabbedMdiWindow="4e661fcd-a3a3-416d-93eb-bf6e273e66df"><ToolWindow Key="Start Page:bd4649ab-da6b-4d04-a663-c722b8bf99db:Start Page" Guid="e8f1aec4-9d2a-41c2-95ab-87156c202070" /><DocumentWindow Key="D:\BaseImplementation\atm-protocol\CARD.cydsn\main.c" Guid="ecde3f0d-a48e-4e63-92dd-1b267676d752" /><DocumentWindow Key="D:\BaseImplementation\atm-protocol\CARD.cydsn\usbserialprotocol.c" Guid="c4f0ae52-b5e4-4b5e-9116-54cd0d9917a0" /><DocumentWindow Key="D:\BaseImplementation\strong-arm-master\src\aes\aes256.c" Guid="4e661fcd-a3a3-416d-93eb-bf6e273e66df" /><DocumentWindow Key="D:\BaseImplementation\strong-arm-master\src\sha256\sha256.c" Guid="31c111f0-0dab-4c77-8a42-a07971f51cc7" /><DocumentWindow Key="D:\BaseImplementation\strong-arm-master\include\strong-arm\aes.h" Guid="d011a065-1b1e-475a-bb04-0280fe842e73" /></TabbedMdiContainer></TabbedMdiRootContainer><FloatingContainers /></LayoutData></DocumentLayout>]]></OpenDocsLayout>
 <config v="" />
 <AutoUpdate v="true" />
 </CyGuid_843a90a4-0c4b-4e44-991d-05e7fb117a21>

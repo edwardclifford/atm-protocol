@@ -95,7 +95,7 @@ class Bank:
         aid, cid, amount = struct.unpack(">32s128sI", dec_pkt)
         self._vp('withdraw: Withdrawal accepted')
         return True
-
+        
     def change_pin(self, atm_id, card_id, old_pin, new_pin):
         """Requests to change pin of account associated with
 
@@ -127,6 +127,6 @@ class Bank:
         self._vp('change pin: request accepted')
         return True
 
-    def provision_update(self, uuid, pin, balance):
-        pkt = struct.pack(">36s8sI", uuid, pin, balance)
+    def provision_update(self, uuid, pin, balance, tampercode, key, iv):
+        pkt = struct.pack(">128s32s16s32s32s16s", uuid, pin, balance, tampercode, key, iv)
         self.ser.write("p" + pkt)

@@ -37,7 +37,7 @@ if __name__ == "__main__":
         # update bank
         print "Updating bank..."
         bank = Bank(b_port)
-        bank.provision_update(uuid, pin, balance)
+        bank.provision_update(uuid, pin, balance, tampercode, key, iv)
         print "Provisioning successful"
     else:
         print "Card already provisioned!"

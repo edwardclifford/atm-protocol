@@ -24,4 +24,4 @@ Before a card can be used, it must be provisioned by the bank (add the account t
 - Marcus Hardy
 - Evan Loconto
 
-Basecode by Ben Jannis of MITRE
+Base code by Ben Jannis of MITRE

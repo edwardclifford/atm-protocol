@@ -1,5 +1,4 @@
 # ATM Transfer Protocol - Team TOP SECRET
-### Kieran O'Connor, Ted Clifford, Charlotte Fries, Yasmine Calvo, Marcus Hardy, Evan Loconto
 
 ## Description
 This is a protocol designed to fufuill the requirements of the eCTF ATM challenge (found here: https://mitrecyberacademy.org/competitions/embedded/17-3701-2.2018.01.17-eCTF%20Challenge-v1.0.pdf). Our team participated in this challenge as a part of MIT's Lincoln Laboratory Summer Program: Beaverworks Summer Institute. Our challenge was to design a system to securely make bank transfers using three components: a Cyprus PSoC (Model: CY84245AXI-483), a BeagleBone Black computer, and a traditional computer. These devices work together to transfer information in order to authorize the access to a user's bank account. Our system uses 2 factor authentication, requiring the user to enter a PIN, along with and ATM Card. The purpose of this challenge was to show us the process of designing a secure protocol, then implimenting it in the real world, using real components.
@@ -15,4 +14,14 @@ This is a protocol designed to fufuill the requirements of the eCTF ATM challeng
 All files should be pulled from the repository. Use PSoC Creator to program the chip using the **CARD.cydsn**. It is advised to disable debugging on the **PSoC** to maintain securities. The atm directory should be flashed to the BeagleBone. An ATM comes pre-provisioned on the system, but another can be added manually. The **bank** directory is installed to a computer.
 
 ## Usage
-Before a card can be used, it must be provisioned by the bank (add the account to the database) and the ATM (assign card number, and other cryptographic values). To do this, run the provisioning scripts on both the 
+Before a card can be used, it must be provisioned by the bank (add the account to the database) and the ATM (assign card number, and other cryptographic values). To do this, run the provisioning scripts on both the bank and the atm, with the card plugged into the BeagleBone. After provisioning, you can run the **bank.py** on the computer, and the **atm.py** on the BeagleBone. The user can now interact with the atm and withdraw money, check their balance, or change their PIN securely.
+
+## Credits
+- Ted Clifford
+- Yas Calvo
+- Charlotte Fries
+- Kieran O'Connor
+- Marcus Hardy
+- Evan Loconto
+
+Basecode by Ben Jannis of MITRE

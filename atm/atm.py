@@ -49,9 +49,10 @@ class ATM(cmd.Cmd, object):
         if self.verbose:
             log(msg)
 
+    atm_id = os.urandom(32).encode('hex')
     def config(self):
         if not os.path.isfile(self.config_path):
-            cfg = {"uuid": os.urandom(32).encode('hex'), "dispensed": 0,
+            cfg = {"uuid": atm_id, "dispensed": 0,
                    "bills": ["example bill %5d" % i for i in range(128)]}
             return cfg
         else:
@@ -76,15 +77,18 @@ class ATM(cmd.Cmd, object):
 
         try:
             self._vp('check_balance: Requesting card_id using inputted pin')
-            card_id = self.card.check_balance(pin, atm_local_key, atm_local_ctr)
-
+            card_id, enc_card_pkt = self.card.check_balance()
             # get balance from bank if card accepted PIN
             if card_id:
                 self._vp('check_balance: Requesting balance from Bank')
-                res = self.bank.check_balance(self.uuid, card_id, pin)
+                new_atm_key, new_atm_iv, res, card_pkt = self.bank.check_balance(self.uuid, atm_id, card_id, pin, atm_local_key, atm_local_ctr, enc_card_pkt)
+                #Sends all of the pkts and authentication codes to the bank to receive the bank balance
                 if res:
-		    print "Balance is: " + str(res)
+		            print "Balance is: " + str(res)
+                    self.card._push_msg(card_pkt)
                     return res
+                    atm_local_key = new_atm_key
+                    atm_local_ctr = new_atm_ctr
             self._vp('check_balance failed')
             return False
         except card.NotProvisioned:
@@ -106,9 +110,12 @@ class ATM(cmd.Cmd, object):
         try:
             self._vp('change_pin: Sending PIN change request to card')
             if self.card.change_pin(old_pin, new_pin):
-                return True
-            self._vp('change_pin failed')
-            return False
+                card_id, card_pkt = self.card.change_pin(old_pin, new_pin)
+            new_atm_k, new_atm_c, pkt_for_card = self.bank.change_pin(old_pin, new_pin, card_pkt, card_id, atm_id, atm_local_key, atm_local_ctr)
+            #sends all of the packets and identifiaction codes to the bank, along with the new pin for it to be changed
+            atm_local_key = new_atm_k
+            atm_local_ctr = new_atm_c
+            self.card._push_msg(pkt_for_card)
         except card.NotProvisioned:
             self._vp('ATM card has not been provisioned!')
             return False
@@ -128,11 +135,11 @@ class ATM(cmd.Cmd, object):
         """
         try:
             self._vp('withdraw: Requesting card_id from card')
-            card_id = self.card.withdraw(pin)
+            card_id, card_pkt = self.card.withdraw()
             # request UUID from HSM if card accepts PIN
             if card_id:
                 self._vp('withdraw: Requesting hsm_id from hsm')
-                if self.bank.withdraw(self.uuid, card_id, amount):
+                if self.bank.withdraw(self.uuid, card_id, amount, card_pkt, atm_local_ctr, atm_local_key, atm_id, pin):
                     with open(self.billfile, "w") as f:
                         self._vp('withdraw: Dispensing bills...')
                         for i in range(self.dispensed, self.dispensed + amount):
@@ -144,6 +151,10 @@ class ATM(cmd.Cmd, object):
             else:
                 self._vp('withdraw failed')
                 return False
+            new_atm_k, new_atm_c, bal, pkt_for_card = self.bank.withdraw(self.uuid, card_id, amount, card_pkt, atm_local_ctr, atm_local_key, atm_id, pin)
+            atm_local_ctr = new_atm_c
+            atm_local_key = new_atm_k
+            self._push_msg(pkt_for_card)
         except ValueError:
             self._vp('amount must be an int')
             return False

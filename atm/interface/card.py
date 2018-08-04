@@ -146,19 +146,11 @@ class Card(object):
         """
         self._sync(False)
 
-        if not self._authenticate(old_pin):
-            return False
-
         self._send_op(self.CHANGE_PIN)
 
-        self._vp('Sending PIN %s' % new_pin)
-        self._push_msg(new_pin)
+        return self._get_uuid(), self._pull_msg()
 
-        resp = self._pull_msg()
-        self._vp('Card sent response %s' % resp)
-        return resp == 'SUCCESS'
-
-    def check_balance(self, pin):
+    def check_balance(self):
         """Requests for a balance to be checked
 
         Args:
@@ -170,14 +162,11 @@ class Card(object):
         """
         self._sync(False)
 
-        #if not self._authenticate(pin):
-        #    return False
-
         self._send_op(self.CHECK_BAL)
 
-        return self._get_uuid()
+        return self._get_uuid(), self._pull_msg()
 
-    def withdraw(self, pin):
+    def withdraw(self):
         """Requests to withdraw from ATM
 
         Args:
@@ -189,12 +178,9 @@ class Card(object):
         """
         self._sync(False)
 
-        if not self._authenticate(pin):
-            return False
-
         self._send_op(self.WITHDRAW)
 
-        return self._get_uuid()
+        return self._get_uuid(), self._pull_msg()
 
     def provision(self, uuid, tampercode, key, iv):
         """Attempts to provision a new ATM card

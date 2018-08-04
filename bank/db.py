@@ -107,12 +107,8 @@ class DB(object):
         Returns:
             (bool): Returns True on Success. False otherwise.
         """
-<<<<<<< HEAD
         return self.modify('cards', str(card_id), ["pin (hashed)", "bal (aes)", "tamper code (hash)", "key (definitely encrypted)", "iv (also encrypted)"], [str(pin), str(amount), str(tampercode), str(key), str(iv)])
 
-=======
-        return self.modify('cards', card_id, ["pin"], [pin], ["bal"], [amount], ["tampercode"], [tampercode], ["key"], [key], ["iv"], [iv])
->>>>>>> a7fe24540b42effb01bf9fc2ac519f16f7535a3c
 
     def admin_create_atm(self, atm_id, atm_aes_key, atm_aes_ctr):
         """create atm with atm_id

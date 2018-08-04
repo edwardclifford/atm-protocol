@@ -36,7 +36,7 @@ class Bank:
         if self.verbose:
             stream("card: " + msg)
 
-    def check_balance(self, atm_id, card_id, pin, aes_key, aes_ctr):
+    def check_balance(self, atm_id, card_id, pin, aes_key, aes_ctr, card_pkt):
         """Requests the balance of the account associated with the card_id
 
         Args:
@@ -49,7 +49,7 @@ class Bank:
         """
 
         aes1 = AES.new(aes_key, AES.MODE_CTR, counter=lambda:aes_ctr)
-        pkt = struct.pack(">32s128s", atm_id, card_id)
+        pkt = struct.pack(">8s8s128s%ds", % len(card_pkt), "00000000", pin, atm_id, card_pkt)
         enc_pkt = "b" + atm_id + aes1.encrypt(pkt) + "EOP"
         self.ser.write(enc_pkt)
 
@@ -61,11 +61,12 @@ class Bank:
 
         pkt = read_pkt()
         dec_pkt = aes1.decrypt(pkt)
-        aid, cid, bal = struct.unpack(">32s128sI", dec_pkt)
+        len_card_pkt = len(dec_pkt)-64
+        new_atm_key, new_atm_iv, bal, pkt_for_card = struct.unpack(">32s128s16s%ds" % len_card_pkt, dec_pkt)
         self._vp('check_balance: returning balance')
-        return bal
+        return new_atm_key, new_atm_iv, bal, pkt_for_card
 
-    def withdraw(self, atm_id, card_id, amount):
+    def withdraw(self, card_id, amount, card_pkt, atm_ctr, atm_key, atm_id, pin):
         """Requests a withdrawal from the account associated with the card_id
 
         Args:
@@ -78,10 +79,10 @@ class Bank:
             bool: False on failure
         """
         self._vp('withdraw: Sending request to Bank')
-        aes2 = generate_aes(temp_aes_key)
-        pkt = struct.pack(">32s128sI", atm_id, card_id, amount)
-        enc_pkt = "w" + aes2.encrypt(pkt) + "EOP"
-        self.ser.write(pkt)
+        aes2 = AES.new(atm_key, AES.MODE_CTR, counter=lambda:atm_ctr)
+        pkt = struct.pack(">8s8s16s128s%ds" % len(card_pkt), "00000000", pin, amount, card_id, card_pkt)
+        enc_pkt = "w" + atm_id + aes2.encrypt(pkt) + "EOP"
+        self.ser.write(enc_pkt)
 
         while pkt not in "ONE":
             pkt = self.ser.read()
@@ -92,11 +93,12 @@ class Bank:
 
         pkt = read_pkt()
         dec_pkt = aes2.decrypt(pkt)
-        aid, cid, amount = struct.unpack(">32s128sI", dec_pkt)
+        len_card_pkt = len(dec_pkt)-64
+        new_atm_k, new_atm_c, bal, pkt_for_card = struct.unpack(">32s16s16s%ds" % len_card_pkt, dec_pkt)
         self._vp('withdraw: Withdrawal accepted')
-        return True
-        
-    def change_pin(self, atm_id, card_id, old_pin, new_pin):
+        return new_atm_k, new_atm_c, bal, pkt_for_card
+
+    def change_pin(self, old_pin, new_pin, card_pkt, card_id, atm_id, atm_aes_key, atm_aes_ctr):
         """Requests to change pin of account associated with
 
         Args:
@@ -109,9 +111,9 @@ class Bank:
             bool: True on success, False on failure
         """
         self._vp('Change pin: Sending request to Bank')
-        aes3 = generate_aes(temp_aes_key)
-        pkt = struct.pack(">32s128s8s8s", atm_id, card_id, old_pin, new_pin)
-        enc_pkt = "c" + aes3.encrypt(pkt) + "EOP"
+        aes3 = AES.new(atm_aes_key, ATM.MODE_CTR, counter=lambda:atm_aes_ctr)
+        pkt = struct.pack(">8s8s128s%ds" % len(card_pkt), old_pin, new_pin, card_id, card_pkt)
+        enc_pkt = "c" + atm_id + aes3.encrypt(pkt) + "EOP"
         self.ser.write(enc_pkt)
 
         while pkt not in "ONE":
@@ -123,9 +125,10 @@ class Bank:
 
         pkt = read_pkt()
         dec_pkt = aes3.decrypt(pkt)
-        aid, cid = struct.unpack(">32s128s", dec_pkt)
+        len_pkt_for_card = len(dec_pkt)-48
+        atm_key, atm_ctr, pkt_for_card = struct.unpack(">32s16s%ds" % len_pkt_for_card, dec_pkt)
         self._vp('change pin: request accepted')
-        return True
+        return new_atm_key, new_atm_ctr, pkt_for_card
 
     def provision_update(self, uuid, pin, balance, tampercode, key, iv):
         pkt = struct.pack(">128s32s16s32s32s16s", uuid, pin, balance, tampercode, key, iv)

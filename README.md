@@ -1,2 +1,4 @@
-# atm-protocol
-This uses the basic implementation that Ben provided for us. It will work as is. Please edit these files to increase security.
+# ATM Transfer Protocol
+## Team TOP SECRET
+-----------------------------------------------------------------------------------
+### Kieran O'Connor   Ted Clifford   Charlotte Fries   Yasmine Calvo   Marcus Hardy

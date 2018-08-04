@@ -11,4 +11,8 @@ This is a protocol designed to fufuill the requirements of the eCTF ATM challeng
 
 **Computer**: This represents the bank side of the system. The bank holds a database of users and ATMs, and interfaces with these in Python. It recieves all requests from the ATM, and is able to decrypt it's requests. Once a user and card is verified as safe, it responds to the request. After each transaction, new encryption devices are distributed to each device, preventing certain attacks on the system.
 
+## Installation
+All files should be pulled from the repository. Use PSoC Creator to program the chip using the **CARD.cydsn**. It is advised to disable debugging on the **PSoC** to maintain securities. The atm directory should be flashed to the BeagleBone. An ATM comes pre-provisioned on the system, but another can be added manually. The **bank** directory is installed to a computer.
 
+## Usage
+Before a card can be used, it must be provisioned by the bank (add the account to the database) and the ATM (assign card number, and other cryptographic values). To do this, run the provisioning scripts on both the 
